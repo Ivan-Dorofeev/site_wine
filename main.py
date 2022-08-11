@@ -32,18 +32,16 @@ def get_wines_from_file():
 
     excel_df = pd.read_excel(args.file_name, sheet_name='Лист1', na_values='nan', keep_default_na=False)
     getted_wines = excel_df.to_dict()
-    count_new_wines = len(getted_wines['Категория'].keys())
 
     wines = collections.defaultdict(list)
-    for index in range(count_new_wines):
-        category = getted_wines['Категория'][index]
-        wines[category].append({
-            'Картинка': getted_wines['Картинка'][index],
-            'Категория': getted_wines['Категория'][index],
-            'Название': getted_wines['Название'][index],
-            'Сорт': getted_wines['Сорт'][index],
-            'Цена': getted_wines['Цена'][index],
-            'Акция': getted_wines['Акция'][index],
+    for number_wine, category_wine in getted_wines['Категория'].items():
+        wines[category_wine].append({
+            'Картинка': getted_wines['Картинка'][number_wine],
+            'Категория': getted_wines['Категория'][number_wine],
+            'Название': getted_wines['Название'][number_wine],
+            'Сорт': getted_wines['Сорт'][number_wine],
+            'Цена': getted_wines['Цена'][number_wine],
+            'Акция': getted_wines['Акция'][number_wine],
         })
     return wines
 
