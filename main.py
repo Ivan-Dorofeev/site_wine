@@ -1,3 +1,4 @@
+import argparse
 import collections
 import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -8,21 +9,28 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def get_correct_years_text():
-    years = datetime.datetime.now().year - 1920
+    difference_age = datetime.datetime.now().year - 1920
     names = {
         1: 'год',
         2: 'года',
         3: 'года',
         4: 'года',
     }
-    last_two_numbers = str(years)[-2:]
-    if last_two_numbers in range(11, 21):
-        return f'{years} лет'
-    return f'{years} {names[int(last_two_numbers)]}'
+    last_two_numbers_of_year = str(difference_age)[-2:]
+    if last_two_numbers_of_year in range(11, 21):
+        return f'{difference_age} лет'
+    return f'{difference_age} {names[int(last_two_numbers_of_year)]}'
 
 
 def get_wines_from_file():
-    excel_df = pd.read_excel('wine.xlsx', sheet_name='Лист1', na_values='nan', keep_default_na=False)
+    parser = argparse.ArgumentParser(
+        description='Программа принимает на вход название файла, который считывает'
+                    ' и добавляем информацию по нему на сайт'
+    )
+    parser.add_argument('file_name', help='Введите имя excel файла')
+    args = parser.parse_args()
+
+    excel_df = pd.read_excel(args.file_name, sheet_name='Лист1', na_values='nan', keep_default_na=False)
     getted_wines = excel_df.to_dict()
     count_new_wines = len(getted_wines['Категория'].keys())
 
