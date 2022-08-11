@@ -1,5 +1,7 @@
+import collections
 import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from pprint import pprint
 
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -29,9 +31,20 @@ days = 365 * 1920
 years = (datetime.datetime.now() - datetime.timedelta(days=days)).year
 correct_years_text = correct_years_text(years)
 
-excel_df = pd.read_excel('wine.xlsx', sheet_name='Лист1')
-wines = excel_df.to_dict()
+excel_df = pd.read_excel('wine3.xlsx', sheet_name='Лист1', na_values='nan', keep_default_na=False)
+getted_wines = excel_df.to_dict()
+count_new_wines = len(getted_wines['Категория'].keys())
 
+wines = collections.defaultdict(list)
+for index in range(count_new_wines):
+    category = getted_wines['Категория'][index]
+    wines[category].append({
+        'Картинка': getted_wines['Картинка'][index],
+        'Категория': getted_wines['Категория'][index],
+        'Название': getted_wines['Название'][index],
+        'Сорт': getted_wines['Сорт'][index],
+        'Цена': getted_wines['Цена'][index],
+    })
 rendered_page = template.render(years=correct_years_text, wines=wines)
 with open('index.html', 'w', encoding="utf8") as file:
     file.write(rendered_page)
