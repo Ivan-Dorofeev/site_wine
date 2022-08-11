@@ -8,8 +8,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def get_correct_years_text():
-    days = 365 * 1920
-    years = (datetime.datetime.now() - datetime.timedelta(days=days)).year
+    years = datetime.datetime.now().year - 1920
     names = {
         1: 'год',
         2: 'года',
