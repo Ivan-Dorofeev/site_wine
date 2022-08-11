@@ -31,7 +31,7 @@ days = 365 * 1920
 years = (datetime.datetime.now() - datetime.timedelta(days=days)).year
 correct_years_text = correct_years_text(years)
 
-excel_df = pd.read_excel('wine3.xlsx', sheet_name='Лист1', na_values='nan', keep_default_na=False)
+excel_df = pd.read_excel('wine4.xlsx', sheet_name='Лист1', na_values='nan', keep_default_na=False)
 getted_wines = excel_df.to_dict()
 count_new_wines = len(getted_wines['Категория'].keys())
 
@@ -44,7 +44,9 @@ for index in range(count_new_wines):
         'Название': getted_wines['Название'][index],
         'Сорт': getted_wines['Сорт'][index],
         'Цена': getted_wines['Цена'][index],
+        'Акция': getted_wines['Акция'][index],
     })
+pprint(wines)
 rendered_page = template.render(years=correct_years_text, wines=wines)
 with open('index.html', 'w', encoding="utf8") as file:
     file.write(rendered_page)
