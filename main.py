@@ -8,7 +8,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def get_correct_years_text():
-    difference_age = datetime.datetime.now().year - 1920
+    year_of_foundation_company = 1920
+    difference_age = datetime.datetime.now().year - year_of_foundation_company
     names = {
         1: 'год',
         2: 'года',
